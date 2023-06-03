@@ -114,9 +114,6 @@ jobs:
           sudo apt-get update && sudo apt-get install setools lzip wine winetricks patchelf
           sudo tar --wildcards -xf /tmp/repo.tar -C ~ --strip-component=2 '*/wine/*' '*/linker/*' '*/xml/*'
           winetricks msxml6
-      - name: Setup Debug Session
-        if: ${{ github.event.inputs.debug_session == 'true'}}
-        uses: csexton/debugger-action@master
       - name: Download WSA
         shell: python
         run: |
@@ -292,6 +289,9 @@ jobs:
                 extract_as(zip, f"lib/{ abi_map['x64'][0] }/libmagiskinit.so", "magiskpolicy", ".")
               extract_as(zip, f"assets/boot_patch.sh", "boot_patch.sh", "magisk")
               extract_as(zip, f"assets/util_functions.sh", "util_functions.sh", "magisk")
+      - name: Setup Debug Session
+        if: ${{ github.event.inputs.debug_session == 'true'}}
+        uses: csexton/debugger-action@master
       - name: Download OpenGApps
         if: ${{ github.event.inputs.gapps_variant != 'none' && github.event.inputs.gapps_variant != '' }}
         shell: python
